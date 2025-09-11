@@ -30,7 +30,8 @@ jobs:
       with:
         node-version: ${{ matrix.node-version }}
         
-    - run: |
+    - working-directory: 'd3-hwschematic'
+      run: |
         npm install && \
         npm install --only=dev && \
         npm run build && \
