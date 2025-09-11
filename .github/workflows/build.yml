@@ -56,3 +56,5 @@ jobs:
       uses: ncipollo/release-action@v1
       with:
         artifacts: "d3-hwschematic/dist/${{ github.event.repository.name }}-${{ github.ref_name }}-${{ matrix.node-version }}.zip"
+        allowUpdates: true
+        token: ${{ secrets.GITHUB_TOKEN }}
