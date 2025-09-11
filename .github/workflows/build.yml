@@ -22,6 +22,7 @@ jobs:
       with:
         repository: 'Nic30/d3-hwschematic'
         path: 'd3-hwschematic'
+        ref: 'v0.1.6'
         
     - name: Use Node.js ${{ matrix.node-version }}
       uses: actions/setup-node@v4
