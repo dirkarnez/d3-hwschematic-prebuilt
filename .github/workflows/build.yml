@@ -5,15 +5,13 @@ name: Node.js CI
 
 on:
   push:
-    branches: [ "main" ]
-  pull_request:
-    branches: [ "main" ]
-
+    # Sequence of patterns matched against refs/tags
+    tags:
+      - 'v*' # Push events to matching v*, i.e. v1.0, v20.15.10
+      
 jobs:
   build:
-
     runs-on: ubuntu-latest
-
     strategy:
       matrix:
         node-version: [18.x, 20.x, 22.x]
@@ -36,3 +34,20 @@ jobs:
         npm install --only=dev && \
         npm run build && \
         ls -R
+
+    - working-directory: 'd3-hwschematic'
+      run: |
+        cp ./node_modules/d3/dist/d3.js ./dist/
+        cp ./node_modules/elkjs/lib/elk.bundled.js ./dist/
+
+    - name: Archive Release
+      uses: thedoctor0/zip-release@master
+      with:
+        type: 'zip'
+        directory: 'd3-hwschematic/dist'
+        filename: "${{ github.event.repository.name }}-${{ github.ref_name }}-${{ matrix.node-version }}.zip"
+        
+    - name: Release prebuilt
+      uses: ncipollo/release-action@v1
+      with:
+        artifacts: "d3-hwschematic/dist/${{ github.event.repository.name }}-${{ github.ref_name }}-${{ matrix.node-version }}.zip"
